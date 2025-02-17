@@ -35,7 +35,8 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 add_executable(joysticadc 
-    joysticadc.c   # Arquivo principal do código
+    joysticadc.c
+    inc/ssd1306.c   # Arquivo principal do código
 )
 
 # Define the program name and version
@@ -49,9 +50,7 @@ pico_enable_stdio_usb(joysticadc 1)
 # Link libraries necessary for the project
 target_link_libraries(joysticadc
     pico_stdlib     # Biblioteca padrão (GPIO, UART, etc.)
-    hardware_adc    # Biblioteca do conversor ADC (joystick)
-    hardware_pwm    # Biblioteca para controle PWM (LEDs)
-    hardware_i2c    # Biblioteca para comunicação I2C (SSD1306)
+       
 )
 
 # Specify the directories containing the header files
@@ -59,8 +58,16 @@ target_include_directories(joysticadc PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}  # Diretório atual, onde o código-fonte está localizado
 )
 
+
 # Add any extra libraries if necessary
 # target_link_libraries(joysticadc <other-libraries>)
+# Add any user requested libraries
+target_link_libraries(joysticadc 
+        hardware_pwm
+        hardware_adc
+        hardware_clocks
+        hardware_i2c
+        )
 
 # Generate extra outputs (for example, UF2 file)
 pico_add_extra_outputs(joysticadc)
